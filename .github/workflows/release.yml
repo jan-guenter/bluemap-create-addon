@@ -1,0 +1,148 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Immutable v* tag to release or resume
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  packages: write
+  attestations: write
+  id-token: write
+
+env:
+  RELEASE_TAG: ${{ github.event.inputs.release_tag || github.ref_name }}
+
+concurrency:
+  group: release-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - name: Check out tagged source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.RELEASE_TAG }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify release identity
+        run: |
+          version="$(sed -n 's/^addon_version=//p' gradle.properties)"
+          test -n "${version}"
+          [[ "${version}" != *-SNAPSHOT ]]
+          [[ "${RELEASE_TAG}" =~ ^v[0-9A-Za-z][0-9A-Za-z.+-]*$ ]]
+          test "${RELEASE_TAG}" = "v${version}"
+          test "$(git cat-file -t "refs/tags/${RELEASE_TAG}")" = tag
+          test "$(git rev-parse 'HEAD^{commit}')" = \
+            "$(git rev-parse "refs/tags/${RELEASE_TAG}^{commit}")"
+          echo "VERSION=${version}" >> "${GITHUB_ENV}"
+
+      - name: Check out exact BlueMap backport
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: jan-guenter/BlueMap
+          ref: 9be321df995a1103808621d529eb72773e719d4d
+          path: .ci/bluemap
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Set up Java 21
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle 9.6.1
+        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+        with:
+          gradle-version: '9.6.1'
+
+      - name: Build and verify accepted bytes
+        run: |
+          python3 -m json.tool provenance/upstreams.json >/dev/null
+          gradle --no-daemon \
+            -PbluemapSourcePath=.ci/bluemap \
+            clean check build generatePomFileForAddonPublication \
+            generateMetadataFileForAddonPublication
+          test "$(stat -c %s \
+            "build/libs/bluemap-create-addon-${VERSION}-sources.jar")" \
+            -eq 105438
+          test "$(stat -c %s build/publications/addon/pom-default.xml)" \
+            -eq 1336
+          test "$(stat -c %s build/publications/addon/module.json)" \
+            -eq 2813
+          sha256sum --check <<SHA256SUMS
+          e9e860ff0a3cc3398090d03f36441a9df863ec96c0c5e6da408815a1f9c1cd05  build/libs/bluemap-create-addon-${VERSION}.jar
+          c795af0a4082da8af8dc3e653836c6a8cba8b2825094cd6e1b2ab7926bed6bec  build/libs/bluemap-create-addon-${VERSION}-sources.jar
+          e747a3d8ce0b52e5621ec13ef69ac21bfad00ca74b02504a0c5ff3b9592eeb7f  build/publications/addon/pom-default.xml
+          a7fbf84d73c5c8941792f404dbab86d79849bf51eb8ed228ff4a5c6735fd4d08  build/publications/addon/module.json
+          SHA256SUMS
+
+      - name: Prepare release bundle
+        run: |
+          mkdir release
+          cp "build/libs/bluemap-create-addon-${VERSION}.jar" release/
+          cp "build/libs/bluemap-create-addon-${VERSION}-sources.jar" release/
+          cp build/publications/addon/pom-default.xml \
+            "release/bluemap-create-addon-${VERSION}.pom"
+          cp build/publications/addon/module.json \
+            "release/bluemap-create-addon-${VERSION}.module.json"
+          (cd release && sha256sum -- ./* > SHA256SUMS)
+          (cd release && sha256sum --check SHA256SUMS)
+          test "$(stat -c %s release/SHA256SUMS)" -eq 444
+          test "$(sha256sum release/SHA256SUMS | cut -d ' ' -f 1)" = \
+            e622c84dce34e4b5566b6f34164e31e6fbdce059f55fecd69b79e1180aac2037
+
+      - name: Create or refresh draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "${RELEASE_TAG}" >/dev/null 2>&1; then
+            test "$(gh release view "${RELEASE_TAG}" \
+              --json isDraft --jq '.isDraft')" = true
+            gh release upload "${RELEASE_TAG}" release/* --clobber
+          else
+            gh release create "${RELEASE_TAG}" release/* \
+              --draft \
+              --prerelease \
+              --generate-notes \
+              --title "BlueMap Create Add-on ${VERSION}" \
+              --verify-tag
+          fi
+
+      - name: Attest release JARs
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
+        with:
+          subject-path: release/*.jar
+
+      - name: Publish Maven package
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          gradle --no-daemon \
+            -PbluemapSourcePath=.ci/bluemap \
+            publishAddonPublicationToGitHubPackagesRepository
+
+      - name: Verify and publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          downloaded="${RUNNER_TEMP}/release-assets"
+          mkdir -p "${downloaded}"
+          gh release download "${RELEASE_TAG}" --dir "${downloaded}"
+          for asset in release/*; do
+            cmp "${asset}" "${downloaded}/$(basename "${asset}")"
+          done
+          gh release edit "${RELEASE_TAG}" --draft=false --prerelease

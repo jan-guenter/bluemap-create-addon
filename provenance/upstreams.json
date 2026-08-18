@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "project_license": "MIT",
+  "implementation_lane": "independent-runtime-interface-resource-bytecode-and-persisted-state-adapter",
+  "baseline": {
+    "pack": "All the Mons 1.2.0",
+    "pack_commit": "c7bb230f21d14d26859d0b92548f089b3a493ad9",
+    "minecraft": "1.21.1",
+    "neoforge": "21.1.248",
+    "java": 21
+  },
+  "accepted_release": {
+    "version": "0.1.0-alpha.1",
+    "date": "2026-08-18",
+    "accepted_implementation_commit": "cb07c10f5c9bed3832c2fc987854b16c9857ec44",
+    "file_name": "bluemap-create-addon-0.1.0-alpha.1.jar",
+    "size": 312744,
+    "sha256": "e9e860ff0a3cc3398090d03f36441a9df863ec96c0c5e6da408815a1f9c1cd05",
+    "release_assets": {
+      "sources_jar": {
+        "size": 105438,
+        "sha256": "c795af0a4082da8af8dc3e653836c6a8cba8b2825094cd6e1b2ab7926bed6bec"
+      },
+      "pom": {
+        "size": 1336,
+        "sha256": "e747a3d8ce0b52e5621ec13ef69ac21bfad00ca74b02504a0c5ff3b9592eeb7f"
+      },
+      "gradle_module": {
+        "size": 2813,
+        "sha256": "a7fbf84d73c5c8941792f404dbab86d79849bf51eb8ed228ff4a5c6735fd4d08"
+      },
+      "sha256sums": {
+        "size": 444,
+        "sha256": "e622c84dce34e4b5566b6f34164e31e6fbdce059f55fecd69b79e1180aac2037"
+      }
+    },
+    "java_tests": {
+      "total": 125,
+      "passed": 125,
+      "failed": 0
+    },
+    "runtime_activation": {
+      "profiles": 5,
+      "blockstate_variants": 882,
+      "obj_resources": 16
+    },
+    "gallery": {
+      "checks": 115,
+      "passed": 115,
+      "failed": 0,
+      "owner_visual_acceptance": true
+    }
+  },
+  "bluemap": {
+    "backport_version": "5.22-agent.backport-5.22-mc1.21.1-2",
+    "backport_commit": "9be321df995a1103808621d529eb72773e719d4d",
+    "api_commit": "285c9a60eff3ac2b0cab308ce1058d1565be0971",
+    "release_jar_sha256": "749f7647fa29764cea113114a7ab3259271bab3da22720989f2bd9fd1f3ba150",
+    "declared_license": "MIT",
+    "bundled": false
+  },
+  "runtime_profiles": {
+    "create": {
+      "version": "6.0.10",
+      "file_name": "create-1.21.1-6.0.10.jar",
+      "size": 19123767,
+      "sha256": "ef87fe5709f1ba1f5b8bb20a2925b5afb4669e178fd6d8bf10c167759eefe37a",
+      "distribution": "Modrinth LNytGWDc/UjX6dr61",
+      "declared_license": "code MIT; assets All Rights Reserved",
+      "bundled": false
+    },
+    "create_aquatic_ambitions": {
+      "version": "2.0.4",
+      "file_name": "create_aquatic_ambitions-1.21.1-2.0.4.jar",
+      "size": 1074131,
+      "sha256": "d50180fd30dc7f034ea4ad5185d18cfa652457be1d8e7a45f0b491d0e6642d44",
+      "distribution": "Modrinth 9SyaPzp7/DoI3PpXj",
+      "declared_license": "MIT",
+      "bundled": false
+    },
+    "createaddition": {
+      "version": "1.6.0",
+      "file_name": "createaddition-1.6.0.jar",
+      "size": 1661802,
+      "sha256": "41876c3780b70365a1848994d146a73423cc19fbe86485885795d9e7d855e7e9",
+      "distribution": "Modrinth kU1G12Nn/qPr8V4G2",
+      "declared_license": "MIT",
+      "bundled": false
+    },
+    "create_hypertube": {
+      "version": "0.6.0",
+      "file_name": "create_hypertube-0.6.0-NEOFORGE.jar",
+      "size": 546142,
+      "sha256": "7bdb8979c7ff7d3b29f7a23771b6ae4870a6dcb7ce2e4a3214fdd6059aacace8",
+      "distribution": "Modrinth ATDdrG1y/qYjOyvgW",
+      "declared_license": "Apache-2.0",
+      "bundled": false
+    },
+    "create_enchantment_industry": {
+      "version": "2.5.0",
+      "file_name": "create-enchantment-industry-2.5.0.jar",
+      "size": 1573021,
+      "sha256": "02a184531c11433cd6521f612982568398aaf510b8ff51e052a78cf7d09d9a49",
+      "distribution": "Modrinth JWGBpFUP/FE6xtrC7",
+      "declared_license": "LGPL-3.0-or-later",
+      "bundled": false,
+      "runtime_dependency": "Create: Dragons Plus 1.11.4"
+    }
+  },
+  "source_correlations": {
+    "create": {
+      "tag": "mc1.21.1-6.0.10",
+      "commit": "ac0c444d9828da3453ae8cc65338e8de063286fb",
+      "correlation": "installed JAR manifest Git-Hash agrees"
+    },
+    "create_enchantment_industry": {
+      "source_jar_sha256": "f5abbb90e3078ee5facd3a25d8c3f07de2b86a6e24dce74d01b77b824279fec2",
+      "correlation": "exact published 2.5.0 source archive"
+    },
+    "create_dragons_plus": {
+      "source_jar_sha256": "fae89f47be99e7d4db06b455d5b0d5b26f22c3a6c9930a4e6e0d48d1d7593854",
+      "correlation": "exact published 1.11.4 source archive"
+    },
+    "other_profiles": "exact runtime bytecode/resources and persisted staging data; no source commit asserted"
+  },
+  "audited_no_custom_routes": {
+    "create_dragons_plus": {
+      "version": "1.11.4",
+      "file_name": "CreateDragonsPlus-1.11.4.jar",
+      "size": 1029344,
+      "sha256": "80687f22daa95fa6240631097688f1e0295a5d31473d9aa56a14d360d863e98b",
+      "declared_license": "LGPL-3.0-or-later",
+      "reason": "stable owned blocks resolve through ordinary JSON; renderer-only tank contents are excluded"
+    },
+    "bellsandwhistles": {
+      "version": "0.4.7-1.21.1",
+      "file_name": "bellsandwhistles-0.4.7-1.21.1.jar",
+      "size": 193619,
+      "sha256": "a438cf2ea3a05120e12342484f1e12ca11526fbf4195d259ce1d7df8a9b3ffca",
+      "declared_license": "GPL-3.0",
+      "reason": "ordinary JSON blockstates; no material stable custom renderer route"
+    },
+    "create_cobblemon_balls_overhaul": {
+      "version": "0.0.4",
+      "file_name": "createcobblemonballsoverhaul-0.0.4.jar",
+      "size": 334794,
+      "sha256": "cdc7355035e721387e53c2486dcd470db4b36d0661ca59c144314272dc6cb164",
+      "declared_license": "MIT",
+      "reason": "registers no blocks"
+    },
+    "sophisticated_backpacks_create_integration": {
+      "version": "0.1.8",
+      "file_name": "sophisticatedbackpackscreateintegration-1.21.1-0.1.8.134.jar",
+      "size": 82627,
+      "sha256": "f396364bfb146d05c1c44d21431f357b68742699cf49e6f8815751db129dc068",
+      "declared_license": "All Rights Reserved",
+      "reason": "registers no blocks"
+    },
+    "sophisticated_storage_create_integration": {
+      "version": "0.1.21",
+      "file_name": "sophisticatedstoragecreateintegration-1.21.1-0.1.21.209.jar",
+      "size": 134163,
+      "sha256": "0b8b13cd120d45525c4df8b465adf5d381b1ed4518b72a005a3b426c6c980d9b",
+      "declared_license": "All Rights Reserved",
+      "reason": "registers no blocks"
+    }
+  },
+  "separate_namespace_scope": {
+    "rechiseled_create": {
+      "version": "1.1.1",
+      "file_name": "rechiseledcreate-1.1.1-neoforge-mc1.21.jar",
+      "size": 983177,
+      "sha256": "ba89cd5d1221621ed226cc7f1c26dc84a660cc4f6d122753052429f96d71248d",
+      "declared_license": "All Rights Reserved",
+      "reason": "owns Fusion-connected rechiseledcreate namespace and remains a separate bridge release unit"
+    }
+  },
+  "historical_discovery": {
+    "all_the_mons_1_1_1": "historical hint only; not evidence for this release"
+  }
+}
