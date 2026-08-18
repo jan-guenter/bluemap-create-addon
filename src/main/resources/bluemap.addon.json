@@ -1,0 +1,8 @@
+{
+  "id": "bluemap-create",
+  "name": "BlueMap Create Add-on",
+  "version": "0.1.0-alpha.1",
+  "entrypoint": "io.github.janguenter.bluemap.create.BlueMapCreateAddon",
+  "authors": ["Jan Guenter"],
+  "website": "https://github.com/jan-guenter/bluemap-create-addon"
+}
