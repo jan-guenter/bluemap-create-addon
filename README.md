@@ -62,7 +62,17 @@ the exact JARs available in `config/bluemap/packs`.
 
 ## Build and verification
 
-Use Java 21, Gradle 9.6.1, and the exact sibling BlueMap checkout:
+Clone with submodules so the exact reviewed build convention is available:
+
+```bash
+git clone --recurse-submodules \
+  https://github.com/jan-guenter/bluemap-create-addon.git
+```
+
+For an existing checkout, run `git submodule update --init --recursive`. The
+build rejects an uninitialized, dirty, or incorrectly pinned toolkit
+submodule. Then use Java 21, Gradle 9.6.1, and the exact sibling BlueMap
+checkout:
 
 ```bash
 gradle --no-daemon clean check build \
