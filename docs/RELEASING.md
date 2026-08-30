@@ -8,6 +8,8 @@ Release only an owner-accepted renderer from a clean reviewed commit.
    exact artifact property. Initialize the pinned toolkit with
    `git submodule update --init --recursive`; the trust preflight must pass
    from the release commit without modifying the gitlink or toolkit worktree.
+   Install `requirements/toolkit.txt` with `--require-hashes` and run
+   `bluemap-addon-toolkit conventions check .` before Gradle.
 3. Verify the production and sources JAR boundaries, licenses, notices, and
    provenance. Do not bundle candidate-mod binaries, resources, source,
    galleries, worlds, logs, or credentials.
