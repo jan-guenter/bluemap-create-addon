@@ -70,9 +70,22 @@ git clone --recurse-submodules \
 ```
 
 For an existing checkout, run `git submodule update --init --recursive`. The
-build rejects an uninitialized, dirty, or incorrectly pinned toolkit
-submodule. Then use Java 21, Gradle 9.6.1, and the exact sibling BlueMap
-checkout:
+build accepts only toolkit commit
+`6cd34a8368cc4ee8628fbe830a90ec5b14960629` and rejects an uninitialized,
+dirty, or incorrectly pinned submodule. Install the corresponding
+`v0.3.0-alpha.1` toolkit wheel from `requirements/toolkit.txt`, then verify the
+repository contract:
+
+```bash
+python -m pip install --disable-pip-version-check --no-deps \
+  --require-hashes --only-binary=:all: \
+  --requirement requirements/toolkit.txt
+bluemap-addon-toolkit conventions check .
+```
+
+The wheel is exactly 20,585 bytes with SHA-256
+`82f1ec53603646849a7c2d4b58f3fb7000413fe83043a302bee88cc88daeb8f7`.
+Then use Java 21, Gradle 9.6.1, and the exact sibling BlueMap checkout:
 
 ```bash
 gradle --no-daemon clean check build \
