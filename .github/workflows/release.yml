@@ -96,16 +96,16 @@ jobs:
             generateMetadataFileForAddonPublication
           test "$(stat -c %s \
             "build/libs/bluemap-create-addon-${VERSION}-sources.jar")" \
-            -eq 105438
+            -eq 113756
           test "$(stat -c %s build/publications/addon/pom-default.xml)" \
             -eq 1336
           test "$(stat -c %s build/publications/addon/module.json)" \
             -eq 2813
           sha256sum --check <<SHA256SUMS
-          e9e860ff0a3cc3398090d03f36441a9df863ec96c0c5e6da408815a1f9c1cd05  build/libs/bluemap-create-addon-${VERSION}.jar
-          c795af0a4082da8af8dc3e653836c6a8cba8b2825094cd6e1b2ab7926bed6bec  build/libs/bluemap-create-addon-${VERSION}-sources.jar
-          e747a3d8ce0b52e5621ec13ef69ac21bfad00ca74b02504a0c5ff3b9592eeb7f  build/publications/addon/pom-default.xml
-          a7fbf84d73c5c8941792f404dbab86d79849bf51eb8ed228ff4a5c6735fd4d08  build/publications/addon/module.json
+          0b401d72783f0285ce68fbc2dcd2a90f34a64c0079080807b8db3c7c09666d73  build/libs/bluemap-create-addon-${VERSION}.jar
+          6ea1bbd2e7c3d47f0c1a2eebe7ad2ff761649a14e447d00491e78d1d857aa87e  build/libs/bluemap-create-addon-${VERSION}-sources.jar
+          744e507af5d890444c80dd608b3e4e99f33c6080b832048b4089cd3a9bc2f4c6  build/publications/addon/pom-default.xml
+          50701e67ef1959c4901884c95c33db617d86c1928d4bee7dc02549075ba84287  build/publications/addon/module.json
           SHA256SUMS
 
       - name: Prepare release bundle
@@ -121,7 +121,7 @@ jobs:
           (cd release && sha256sum --check SHA256SUMS)
           test "$(stat -c %s release/SHA256SUMS)" -eq 444
           test "$(sha256sum release/SHA256SUMS | cut -d ' ' -f 1)" = \
-            e622c84dce34e4b5566b6f34164e31e6fbdce059f55fecd69b79e1180aac2037
+            82a08cc11d9b2f91b80e648dadf04886f389d1ef7247f357c621feff983c12fe
 
       - name: Create or refresh draft release
         env:

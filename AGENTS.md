@@ -17,3 +17,9 @@ The only BlueMap target is version
 `285c9a60eff3ac2b0cab308ce1058d1565be0971`. Compile the four Adapter API
 `0.1.0-alpha.2` sources from commit
 `e81f08bc4bfbf02d810ec8949a019130e2e61634`; never bundle its standalone JAR.
+
+The owner accepted release candidate `0.1.0-alpha.2` on 2026-08-31 in the
+combined 51-gallery runtime. Its exact 320,656-byte production JAR has SHA-256
+`0b401d72783f0285ce68fbc2dcd2a90f34a64c0079080807b8db3c7c09666d73`.
+The final candidate changes only the stale version in `bluemap.addon.json`
+from alpha.1 to alpha.2; its 165 class files match the visual candidate.

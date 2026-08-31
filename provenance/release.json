@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "status": "unpublished-migration-candidate",
+  "status": "owner-accepted-release-candidate",
   "published": false,
-  "owner_acceptance": "required",
+  "owner_acceptance": "accepted",
   "version": "0.1.0-alpha.2",
   "release_date": "2026-08-31",
   "repository": "https://github.com/jan-guenter/bluemap-create-addon",
@@ -11,13 +11,13 @@
   "candidate_artifacts": {
     "production_jar": {
       "file_name": "bluemap-create-addon-0.1.0-alpha.2.jar",
-      "size": 320655,
-      "sha256": "aefc35b0f5af6b1e15c9414aeb909855fd43e113d42b9baa4df4ed1125089297"
+      "size": 320656,
+      "sha256": "0b401d72783f0285ce68fbc2dcd2a90f34a64c0079080807b8db3c7c09666d73"
     },
     "sources_jar": {
       "file_name": "bluemap-create-addon-0.1.0-alpha.2-sources.jar",
-      "size": 113755,
-      "sha256": "df059fab655bba4b7018833dd13f12811f98d7df62720896d2cdd5710bf23daa"
+      "size": 113756,
+      "sha256": "6ea1bbd2e7c3d47f0c1a2eebe7ad2ff761649a14e447d00491e78d1d857aa87e"
     },
     "pom": {
       "file_name": "bluemap-create-addon-0.1.0-alpha.2.pom",
@@ -27,7 +27,7 @@
     "gradle_module": {
       "file_name": "bluemap-create-addon-0.1.0-alpha.2.module.json",
       "size": 2813,
-      "sha256": "80eb69e6123e13f97cd88fec9807a99e020cea26cfb8a47ebc1e67125c70637a"
+      "sha256": "50701e67ef1959c4901884c95c33db617d86c1928d4bee7dc02549075ba84287"
     }
   },
   "baseline_release": {
@@ -78,6 +78,92 @@
     "java_tests_passed": 127,
     "gallery_integrity": true,
     "checkstyle": true,
-    "actionlint": true
+    "actionlint": true,
+    "accepted_artifact_gate": true,
+    "aggregate_runtime_suite": true,
+    "metadata_only_delta_audit": true
+  },
+  "owner_accepted_staging": {
+    "visual_acceptance": true,
+    "accepted_on": "2026-08-31",
+    "scope": "Owner accepted the Create view in the five-add-on aggregate batch.",
+    "integration_run": "bluemap-atmons-integration-20260831-tech-batch-523-native",
+    "candidate_manifest": {
+      "sha256": "8eb752e176fcf455d5d31932c15722b810071068885abc42fd2791208de3a577",
+      "candidate_pack_inventory_sha256": "d0b4ea6b84f4d0fb968261194f5fb66424a7e371e5d21ee3e79a164246d3efe5",
+      "local_candidate_base_source_commit": "05253d5008bb27408bc27b7664bae5ca3ec72e9f",
+      "local_candidate_base_source_tree": "14b56ebef66da25fbfebcb6349855a7a88f4e24c",
+      "local_candidate_base_artifact": {
+        "file_name": "bluemap-create-addon-0.1.0-alpha.2.jar",
+        "size": 320655,
+        "sha256": "aefc35b0f5af6b1e15c9414aeb909855fd43e113d42b9baa4df4ed1125089297"
+      }
+    },
+    "runtime_suite": {
+      "file_name": "runtime-suite-next-five.json",
+      "sha256": "b150f1902c852c8d14aff6e2c9b75e208c86e02609daab891cb7c0e00ac90efb",
+      "finished_at": "2026-08-31T16:09:45.587520Z",
+      "status": "passed",
+      "gallery_count": 51,
+      "passed": 51,
+      "failed": 0,
+      "runtime_attestation_sha256": "d7f25218206aacb36840a67b3ab34709509cdbde5d6822c6106236245d621498",
+      "create_verification": {
+        "status": "passed",
+        "mirrored_checks": 16,
+        "pre_verification_failures": 0,
+        "failures": 0
+      }
+    },
+    "gallery_render": {
+      "file_name": "gallery-render-next-five.json",
+      "sha256": "070a39c8c9afd4261d7ed92eb05949d10dbefd2b518185aa1edf637c4a91901e",
+      "map_id": "atmons_integration",
+      "composition_id": "4c1139e67bee1f570824ac90bdc12a4331381946acf4cd593609c51c3a4c894a",
+      "layout_sha256": "5ea9a96c5e5b159057441a6eb6fbfdbf47aa06b95dadfcb2756246b117a04944",
+      "fresh_tile_evidence_sha256": "8d20c87b78978c976ad662b686535442a90e066fd3b9388aaf46ef3ccd9d3867",
+      "region_count": 4,
+      "tile_count": 589
+    }
+  },
+  "metadata_only_release_delta": {
+    "reason": "Correct the stale descriptor version from 0.1.0-alpha.1 to 0.1.0-alpha.2.",
+    "production_archive_entry_diff": [
+      "bluemap.addon.json"
+    ],
+    "sources_archive_entry_diff": [
+      "bluemap.addon.json"
+    ],
+    "production_class_files_compared": 165,
+    "production_class_bytecode_identical": true,
+    "all_other_production_entries_identical": true,
+    "all_other_sources_entries_identical": true
+  },
+  "final_release_artifacts": {
+    "production_jar": {
+      "file_name": "bluemap-create-addon-0.1.0-alpha.2.jar",
+      "size": 320656,
+      "sha256": "0b401d72783f0285ce68fbc2dcd2a90f34a64c0079080807b8db3c7c09666d73"
+    },
+    "sources_jar": {
+      "file_name": "bluemap-create-addon-0.1.0-alpha.2-sources.jar",
+      "size": 113756,
+      "sha256": "6ea1bbd2e7c3d47f0c1a2eebe7ad2ff761649a14e447d00491e78d1d857aa87e"
+    },
+    "pom": {
+      "file_name": "bluemap-create-addon-0.1.0-alpha.2.pom",
+      "size": 1336,
+      "sha256": "744e507af5d890444c80dd608b3e4e99f33c6080b832048b4089cd3a9bc2f4c6"
+    },
+    "gradle_module": {
+      "file_name": "bluemap-create-addon-0.1.0-alpha.2.module.json",
+      "size": 2813,
+      "sha256": "50701e67ef1959c4901884c95c33db617d86c1928d4bee7dc02549075ba84287"
+    },
+    "checksum_sidecar": {
+      "file_name": "SHA256SUMS",
+      "size": 444,
+      "sha256": "82a08cc11d9b2f91b80e648dadf04886f389d1ef7247f357c621feff983c12fe"
+    }
   }
 }

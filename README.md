@@ -7,9 +7,9 @@ appearance.
 
 ## Status and compatibility
 
-Version `0.1.0-alpha.2` is an unpublished BlueMap 5.23 migration candidate
+Version `0.1.0-alpha.2` is an owner-accepted BlueMap 5.23 release candidate
 for this exact environment. Version `0.1.0-alpha.1` remains the latest
-owner-accepted release.
+published release.
 
 - All the Mons `1.2.0`, Minecraft `1.21.1`, NeoForge `21.1.248`, Java `21`;
 - BlueMap feature backport
@@ -22,9 +22,12 @@ owner-accepted release.
 - Create Hypertube `0.6.0`;
 - Create: Enchantment Industry `2.5.0`.
 
-The `0.1.0-alpha.1` production JAR was accepted on 2026-08-18. It is exactly 312,744 bytes
-with SHA-256
-`e9e860ff0a3cc3398090d03f36441a9df863ec96c0c5e6da408815a1f9c1cd05`.
+The `0.1.0-alpha.2` production JAR was accepted on 2026-08-31. It is exactly
+320,656 bytes with SHA-256
+`0b401d72783f0285ce68fbc2dcd2a90f34a64c0079080807b8db3c7c09666d73`.
+It differs from the visually accepted staging JAR only in the add-on version
+inside `bluemap.addon.json`; all 165 class files and every other archive entry
+are byte-identical.
 Compatibility outside these exact inputs is not asserted. Core Create is
 mandatory; each extension profile is detected and activated independently by
 its exact installed JAR size and SHA-256. Unknown, changed, missing, or
