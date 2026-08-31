@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 package io.github.janguenter.bluemap.create;
 
-import io.github.janguenter.bluemap.create.adapter.bluemap522.AdapterCompatibility;
+import io.github.janguenter.bluemap.addon.adapter.api.bluemap523.BlueMapRuntimeCompatibility;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -12,12 +12,12 @@ public final class BlueMapCreateAddon implements Runnable {
     @Override
     public void run() {
         try {
-            if (!AdapterCompatibility.currentRuntimeSupported()) {
+            if (!BlueMapRuntimeCompatibility.matchesCurrent()) {
                 inactive("unsupported BlueMap internal ABI", null);
                 return;
             }
             Class<?> adapter = Class.forName(
-                    "io.github.janguenter.bluemap.create.adapter.bluemap522.BlueMap522Adapter",
+                    "io.github.janguenter.bluemap.create.adapter.bluemap523.BlueMap523Adapter",
                     true,
                     BlueMapCreateAddon.class.getClassLoader()
             );
@@ -35,4 +35,3 @@ public final class BlueMapCreateAddon implements Runnable {
         System.err.println("BlueMap Create add-on is inactive: " + reason + detail + '.');
     }
 }
-
