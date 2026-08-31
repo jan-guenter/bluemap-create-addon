@@ -4,7 +4,8 @@ Nothing in this table is bundled in the production JAR.
 
 | Component | Exact accepted identity | Declared license | Use |
 | --- | --- | --- | --- |
-| BlueMap | Backport `5.22-agent.backport-5.22-mc1.21.1-2`, commit `9be321df995a1103808621d529eb72773e719d4d` | MIT | Compile/test API |
+| BlueMap | Feature backport `5.22-feature.backport-5.23-stateless-java-web-server-46`, commit `7e07f4e74ec1e92a6ead9aa1e66054af3e133aac`; API `285c9a60eff3ac2b0cab308ce1058d1565be0971` | MIT | Compile/test API |
+| BlueMap Add-on Adapter API | `0.1.0-alpha.2`, commit `e81f08bc4bfbf02d810ec8949a019130e2e61634` | MIT | Four exact source files compiled into this add-on |
 | Create | `6.0.10`, SHA-256 `ef87fe5709f1ba1f5b8bb20a2925b5afb4669e178fd6d8bf10c167759eefe37a` | Code MIT; assets All Rights Reserved | Operator-installed runtime resources |
 | Create Aquatic Ambitions | `2.0.4`, SHA-256 `d50180fd30dc7f034ea4ad5185d18cfa652457be1d8e7a45f0b491d0e6642d44` | MIT | Optional exact runtime profile |
 | Create Crafts & Additions | `1.6.0`, SHA-256 `41876c3780b70365a1848994d146a73423cc19fbe86485885795d9e7d855e7e9` | MIT | Optional exact runtime profile |

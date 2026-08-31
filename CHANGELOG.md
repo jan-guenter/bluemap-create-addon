@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.2 - 2026-08-31
+
+- Target only the pinned BlueMap 5.23 feature backport and API commits.
+- Move the internal adapter package from `bluemap522` to `bluemap523`.
+- Compile the four pinned Adapter API `0.1.0-alpha.2` sources and remove the
+  duplicate compatibility, extension-factory, and registry helpers.
+- Preserve all accepted Create-family rendering and gallery behavior.
+
 ## 0.1.0-alpha.1 - 2026-08-18
 
 - Render persisted Copycat materials, complete belts and fluid pipes, saved

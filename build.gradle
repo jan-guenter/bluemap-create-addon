@@ -14,6 +14,10 @@ base {
     archivesName = artifact_id
 }
 
+sourceSets {
+    main.java.srcDir 'modules/bluemap-addon-adapter-api/src/main/java'
+}
+
 repositories {
     mavenCentral()
     maven {
@@ -43,9 +47,164 @@ tasks.named('jar', Jar).configure {
         into 'META-INF'
         rename { 'LICENSE-bluemap-create-addon' }
     }
+    from('NOTICE.md') {
+        into 'META-INF'
+        rename { 'NOTICE-bluemap-create-addon.md' }
+    }
+    from('THIRD_PARTY.md') {
+        into 'META-INF'
+        rename { 'THIRD_PARTY-bluemap-create-addon.md' }
+    }
+    from('provenance/upstreams.json') { into 'META-INF/bluemap-create' }
+}
+
+tasks.named('sourcesJar', Jar).configure {
+    includeEmptyDirs = false
+    from('LICENSE') {
+        into 'META-INF'
+        rename { 'LICENSE-bluemap-create-addon' }
+    }
+    from('NOTICE.md') {
+        into 'META-INF'
+        rename { 'NOTICE-bluemap-create-addon.md' }
+    }
+    from('THIRD_PARTY.md') {
+        into 'META-INF'
+        rename { 'THIRD_PARTY-bluemap-create-addon.md' }
+    }
+    from('provenance/upstreams.json') { into 'META-INF/bluemap-create' }
 }
 
 def productionJar = tasks.named('jar', Jar).flatMap { it.archiveFile }
+def publishedSourcesJar = tasks.named('sourcesJar', Jar).flatMap { it.archiveFile }
+def sharedAdapterApiPackage =
+        'io/github/janguenter/bluemap/addon/adapter/api/bluemap523/'
+def sharedAdapterApiClasses = [
+        'BlueMapRuntimeCompatibility.class',
+        'RegistryGuard.class',
+        'ResourceExtensionType.class',
+        'SyntheticDispatch.class'
+].collect { sharedAdapterApiPackage + it }
+def sharedAdapterApiSources = [
+        'BlueMapRuntimeCompatibility.java',
+        'RegistryGuard.java',
+        'ResourceExtensionType.java',
+        'SyntheticDispatch.java'
+].collect { sharedAdapterApiPackage + it }
+def legacyLocalAdapterPackage =
+        'io/github/janguenter/bluemap/create/adapter/bluemap522/'
+def displacedAdapterHelpers = [
+        'io/github/janguenter/bluemap/create/adapter/bluemap523/AdapterCompatibility',
+        'io/github/janguenter/bluemap/create/adapter/bluemap523/CreateResourceExtensionType'
+]
+
+tasks.register('verifyProductionJar') {
+    dependsOn tasks.named('jar')
+    inputs.file(productionJar)
+    doLast {
+        def zip = new java.util.zip.ZipFile(inputs.files.singleFile)
+        try {
+            def entries = zip.entries().findAll { !it.directory }.collect { it.name }
+            def required = [
+                    'bluemap.addon.json',
+                    'io/github/janguenter/bluemap/create/BlueMapCreateAddon.class',
+                    'META-INF/LICENSE-bluemap-create-addon',
+                    'META-INF/NOTICE-bluemap-create-addon.md',
+                    'META-INF/THIRD_PARTY-bluemap-create-addon.md',
+                    'META-INF/bluemap-create/upstreams.json'
+            ]
+            required.addAll(sharedAdapterApiClasses)
+            def missing = required.findAll { !entries.contains(it) }
+            def nonUniqueShared = sharedAdapterApiClasses.findAll { shared ->
+                entries.count { it == shared } != 1
+            }
+            def foreignClasses = entries.findAll { entry ->
+                entry.endsWith('.class')
+                        && !entry.startsWith('io/github/janguenter/bluemap/create/')
+                        && !sharedAdapterApiClasses.contains(entry)
+            }
+            def forbidden = entries.findAll { entry ->
+                entry.endsWith('.jar')
+                        || entry == 'META-INF/neoforge.mods.toml'
+                        || entry == 'fabric.mod.json'
+                        || entry.endsWith('.mixins.json')
+                        || entry.startsWith('net/minecraft/')
+                        || entry.startsWith('net/neoforged/')
+                        || entry.startsWith('gallery/')
+                        || entry.startsWith('assets/create/')
+                        || entry.startsWith(legacyLocalAdapterPackage)
+                        || displacedAdapterHelpers.any { helper -> entry.startsWith(helper) }
+                        || (entry.startsWith(sharedAdapterApiPackage)
+                            && !sharedAdapterApiClasses.contains(entry))
+            }
+            if (!missing.isEmpty() || !nonUniqueShared.isEmpty()
+                    || !foreignClasses.isEmpty() || !forbidden.isEmpty()) {
+                throw new GradleException(
+                        "Production JAR boundary mismatch: missing=${missing}, "
+                                + "nonUnique=${nonUniqueShared}, "
+                                + "foreignClasses=${foreignClasses}, forbidden=${forbidden}"
+                )
+            }
+        } finally {
+            zip.close()
+        }
+    }
+}
+
+tasks.register('verifySourcesJar') {
+    dependsOn tasks.named('sourcesJar')
+    inputs.file(publishedSourcesJar)
+    doLast {
+        def zip = new java.util.zip.ZipFile(inputs.files.singleFile)
+        try {
+            def entries = zip.entries().findAll { !it.directory }.collect { it.name }
+            def required = [
+                    'io/github/janguenter/bluemap/create/BlueMapCreateAddon.java',
+                    'bluemap.addon.json',
+                    'META-INF/LICENSE-bluemap-create-addon',
+                    'META-INF/bluemap-create/upstreams.json'
+            ]
+            required.addAll(sharedAdapterApiSources)
+            def missing = required.findAll { !entries.contains(it) }
+            def nonUniqueShared = sharedAdapterApiSources.findAll { shared ->
+                entries.count { it == shared } != 1
+            }
+            def projectJava = entries.findAll { it.endsWith('.java') }
+            def foreignJava = projectJava.findAll { entry ->
+                !entry.startsWith('io/github/janguenter/bluemap/create/')
+                        && !sharedAdapterApiSources.contains(entry)
+            }
+            def forbidden = entries.findAll { entry ->
+                entry.endsWith('.class')
+                        || entry.endsWith('.jar')
+                        || entry == 'META-INF/neoforge.mods.toml'
+                        || entry == 'fabric.mod.json'
+                        || entry.endsWith('.mixins.json')
+                        || entry.startsWith('net/minecraft/')
+                        || entry.startsWith('net/neoforged/')
+                        || entry.startsWith('gallery/')
+                        || entry.startsWith('assets/create/')
+                        || entry.startsWith(legacyLocalAdapterPackage)
+                        || displacedAdapterHelpers.any { helper ->
+                            entry == "${helper}.java"
+                        }
+                        || (entry.startsWith(sharedAdapterApiPackage)
+                            && !sharedAdapterApiSources.contains(entry))
+            }
+            if (!missing.isEmpty() || !nonUniqueShared.isEmpty()
+                    || projectJava.isEmpty() || !foreignJava.isEmpty()
+                    || !forbidden.isEmpty()) {
+                throw new GradleException(
+                        "Sources JAR boundary mismatch: missing=${missing}, "
+                                + "nonUnique=${nonUniqueShared}, "
+                                + "foreignJava=${foreignJava}, forbidden=${forbidden}"
+                )
+            }
+        } finally {
+            zip.close()
+        }
+    }
+}
 tasks.register('verifyAcceptedProductionJar') {
     dependsOn tasks.named('jar')
     inputs.file(productionJar)
@@ -75,7 +234,13 @@ tasks.register('verifyAcceptedProductionJar') {
 }
 
 tasks.named('check').configure {
-    dependsOn tasks.named('verifyAcceptedProductionJar')
+    dependsOn tasks.named('verifyProductionJar')
+    dependsOn tasks.named('verifySourcesJar')
+}
+
+tasks.register('prototypeCheck') {
+    dependsOn tasks.named('check')
+    dependsOn tasks.named('galleryZip')
 }
 
 tasks.register('galleryZip', Zip) {

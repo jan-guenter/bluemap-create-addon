@@ -2,26 +2,32 @@
 
 [![CI](https://github.com/jan-guenter/bluemap-create-addon/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/jan-guenter/bluemap-create-addon/actions/workflows/ci.yml)
 
-An exact-profile BlueMap 5.22 add-on for stable Create-family world
+An exact-profile BlueMap 5.23 feature-backport add-on for stable Create-family world
 appearance.
 
 ## Status and compatibility
 
-Version `0.1.0-alpha.1` is the owner-accepted prerelease for this exact
-environment:
+Version `0.1.0-alpha.2` is an owner-accepted BlueMap 5.23 release candidate
+for this exact environment. Version `0.1.0-alpha.1` remains the latest
+published release.
 
 - All the Mons `1.2.0`, Minecraft `1.21.1`, NeoForge `21.1.248`, Java `21`;
-- BlueMap backport `5.22-agent.backport-5.22-mc1.21.1-2`, commit
-  `9be321df995a1103808621d529eb72773e719d4d`;
+- BlueMap feature backport
+  `5.22-feature.backport-5.23-stateless-java-web-server-46`, commit
+  `7e07f4e74ec1e92a6ead9aa1e66054af3e133aac`, API commit
+  `285c9a60eff3ac2b0cab308ce1058d1565be0971`;
 - Create `6.0.10`;
 - Create Aquatic Ambitions `2.0.4`;
 - Create Crafts & Additions `1.6.0`;
 - Create Hypertube `0.6.0`;
 - Create: Enchantment Industry `2.5.0`.
 
-The production JAR was accepted on 2026-08-18. It is exactly 312,744 bytes
-with SHA-256
-`e9e860ff0a3cc3398090d03f36441a9df863ec96c0c5e6da408815a1f9c1cd05`.
+The `0.1.0-alpha.2` production JAR was accepted on 2026-08-31. It is exactly
+320,656 bytes with SHA-256
+`0b401d72783f0285ce68fbc2dcd2a90f34a64c0079080807b8db3c7c09666d73`.
+It differs from the visually accepted staging JAR only in the add-on version
+inside `bluemap.addon.json`; all 165 class files and every other archive entry
+are byte-identical.
 Compatibility outside these exact inputs is not asserted. Core Create is
 mandatory; each extension profile is detected and activated independently by
 its exact installed JAR size and SHA-256. Unknown, changed, missing, or
@@ -62,7 +68,8 @@ the exact JARs available in `config/bluemap/packs`.
 
 ## Build and verification
 
-Clone with submodules so the exact reviewed build convention is available:
+Clone with submodules so the exact reviewed build convention and Adapter API
+sources are available:
 
 ```bash
 git clone --recurse-submodules \
@@ -70,7 +77,8 @@ git clone --recurse-submodules \
 ```
 
 For an existing checkout, run `git submodule update --init --recursive`. The
-build accepts only toolkit commit
+build accepts only Adapter API commit
+`e81f08bc4bfbf02d810ec8949a019130e2e61634` and toolkit commit
 `6cd34a8368cc4ee8628fbe830a90ec5b14960629` and rejects an uninitialized,
 dirty, or incorrectly pinned submodule. Install the corresponding
 `v0.3.0-alpha.1` toolkit wheel from `requirements/toolkit.txt`, then verify the
@@ -93,8 +101,8 @@ gradle --no-daemon clean check build \
   generateMetadataFileForAddonPublication
 ```
 
-`check` rejects a production JAR that differs from the accepted size or
-SHA-256. The accepted implementation passed 125/125 Java tests, activated 882
+`check` verifies the production and sources archive boundaries. The accepted
+implementation passed 125/125 Java tests, activated 882
 blockstate variants plus 16 OBJ resources in the exact five-profile runtime,
 and passed all 115 delayed gallery checks before owner visual acceptance.
 
